@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cali Phục Hồi & Chăm Sóc Vận Động</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .glass { backdrop-filter: blur(16px); background: rgba(255,255,255,0.92); }
+    .tab-active { background: #dc2626; color: #fff; box-shadow: 0 10px 24px rgba(220, 38, 38, 0.25); }
+    .tab-inactive { background: #fff; color: #374151; }
+    .product-card { transition: transform .2s ease, box-shadow .2s ease; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(15, 23, 42, .08); }
+    .fade-in { animation: fadeIn .25s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <header class="sticky top-0 z-50 border-b border-slate-200 glass">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col xl:flex-row gap-3 xl:items-center xl:justify-between">
+      <div>
+        <div class="text-xs font-bold tracking-[0.25em] text-red-600 uppercase">California Fitness & Wellness</div>
+        <h1 class="text-xl lg:text-2xl font-black" data-i18n="appTitle">Công cụ bán hàng Phục hồi & Chăm sóc vận động</h1>
+      </div>
+      <div class="flex flex-col lg:flex-row gap-3 lg:items-center">
+        <nav id="mainNav" class="flex gap-2 overflow-x-auto pb-1 lg:pb-0"></nav>
+        <div class="flex bg-white border border-slate-200 rounded-full p-1 shadow-sm w-fit">
+          <button id="btn-vi" type="button" class="lang-btn px-4 py-2 rounded-full text-sm font-black" data-lang="vi">VI</button>
+          <button id="btn-en" type="button" class="lang-btn px-4 py-2 rounded-full text-sm font-black" data-lang="en">EN</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" class="max-w-7xl mx-auto px-4 py-8"></main>
+
+  <script>
+    'use strict';
+
+    const PRODUCT_KEYS = ['fitness', 'office', 'senior', 'fullbody'];
+    const PAGE_KEYS = ['home', ...PRODUCT_KEYS];
+
+    let currentLang = 'vi';
+    let currentPage = 'home';
+
+    const i18n = {
+      vi: {
+        appTitle: 'Công cụ bán hàng Phục hồi & Chăm sóc vận động',
+        nav: {
+          home: 'Trang chủ',
+          fitness: 'Phục hồi sau tập',
+          office: 'Đau mỏi văn phòng',
+          senior: 'Golden Mobility',
+          fullbody: '360° Recovery'
+        },
+        hero: {
+          badge: 'Sản phẩm mới · Cẩm nang tư vấn cho nhân viên',
+          title: 'Không chỉ giảm đau. Giúp khách vận động tốt hơn, tập tốt hơn, sống khỏe hơn.',
+          subtitle: 'Trang này giúp nhân viên chọn đúng gói, giải thích đúng lợi ích, báo giá rõ ràng và chốt bán theo nhu cầu thật của khách.',
+          selector: 'Chọn nhanh theo nhu cầu khách'
+        },
+        quick: {
+          fitness: 'Khách mới tập / đau mỏi sau tập → Phục hồi sau tập',
+          office: 'Dân văn phòng / đau cổ vai gáy / đau lưng → Đau mỏi văn phòng',
+          senior: 'Người lớn tuổi / đau khớp / vận động kém → Golden Mobility',
+          fullbody: 'Đau nhiều vị trí / muốn linh hoạt → 360° Recovery'
+        },
+        home: {
+          title: 'Trang chủ · Tổng quan sản phẩm',
+          subtitle: 'Nhân viên nhìn nhanh các nhóm sản phẩm và bấm vào từng gói để xem chi tiết.',
+          rule: 'Nguyên tắc: Bán theo hướng phục hồi, chăm sóc vận động, nâng cao sức khỏe — không bán như điều trị y tế.',
+          detailBtn: 'Xem chi tiết',
+          boxes: [
+            { title: 'Cách chọn gói nhanh', body: 'Đau sau tập: Phục hồi sau tập. Đau do ngồi nhiều: Đau mỏi văn phòng. Đau khớp hoặc lớn tuổi: Golden Mobility. Đau nhiều vị trí: 360° Recovery.' },
+            { title: 'Cách bán', body: 'Gói lẻ dùng để khách trải nghiệm. Gói 12 buổi phù hợp với khách có vấn đề rõ. Gói 50 hoặc 100 buổi phù hợp với khách VIP, gia đình hoặc chăm sóc dài hạn.' },
+            { title: 'Thông điệp chính', body: 'Dịch vụ này không chỉ giúp khách dễ chịu hơn, mà còn giúp cơ thể quay lại vận động tốt hơn để tập luyện, làm việc và sinh hoạt ổn định hơn.' }
+          ]
+        },
+        labels: {
+          back: '← Về trang chủ',
+          position: 'Định vị sản phẩm',
+          audience: 'Đối tượng',
+          benefits: 'Lợi ích chính',
+          usp: 'Điểm khác biệt',
+          close: 'Câu chốt mẫu',
+          priceTitle: 'Bảng giá',
+          objectionTitle: 'Xử lý từ chối',
+          staffReminder: 'Lưu ý cho nhân viên',
+          perSession: 'VNĐ / buổi 60 phút',
+          single: 'Gói lẻ',
+          combo12: 'Gói 12 buổi',
+          combo50: 'Gói 50 buổi',
+          combo100: 'Gói từ 100 buổi',
+          singleNote: 'Phù hợp để khách trải nghiệm.',
+          combo12Note: 'Nên chốt khi khách có vấn đề rõ.',
+          combo50Note: 'Cho khách muốn chăm sóc linh hoạt nhiều vùng.',
+          combo100Note: 'Cho khách VIP, gia đình, chăm sóc dài hạn.'
+        },
+        objections: [
+          { q: '“Sao giá cao vậy?”', a: 'Đây là dịch vụ chăm sóc vận động có định hướng phục hồi, không phải massage thư giãn thông thường. Mục tiêu là giúp cơ thể vận động tốt hơn và quay lại tập luyện, làm việc, sinh hoạt ổn định hơn.' },
+          { q: '“Tôi chỉ đau nhẹ thôi.”', a: 'Đau nhẹ là thời điểm tốt để xử lý sớm, tránh để đau lặp lại và ảnh hưởng đến tập luyện hoặc công việc.' },
+          { q: '“Tôi cần suy nghĩ thêm.”', a: 'Mình có thể bắt đầu bằng 1 buổi trải nghiệm để anh/chị cảm nhận trước. Nếu thấy phù hợp thì mình chuyển sang gói nhiều buổi để tối ưu chi phí.' }
+        ],
+        staffText: 'Không dùng ngôn ngữ “chữa bệnh / điều trị bệnh”. Hãy dùng ngôn ngữ: phục hồi, chăm sóc vận động, vận động tốt hơn, sinh hoạt ổn định hơn.',
+        staffWords: ['Phục hồi', 'Chăm sóc vận động', 'Vận động tốt hơn', 'Sinh hoạt ổn định'],
+        cards: {
+          fitness: { icon: '🏋️', title: 'Phục hồi sau tập', desc: 'Cho khách mỏi cơ, căng cơ sau tập, người mới tập hoặc đang tập với huấn luyện viên.', bullets: ['Giãn cơ nhanh', 'Phục hồi vận động chuyên sâu'], color: 'red' },
+          office: { icon: '💻', title: 'Đau mỏi văn phòng', desc: 'Cho dân văn phòng đau cổ vai gáy, đau lưng dưới, đau do tư thế và ngồi nhiều.', bullets: ['Cổ - Vai - Gáy', 'Thắt lưng'], color: 'orange' },
+          senior: { icon: '🌿', title: 'Golden Mobility', desc: 'Cho người lớn tuổi hoặc khách có đau cơ xương khớp nhẹ, hạn chế vận động.', bullets: ['Vận động an toàn', 'Duy trì sinh hoạt lâu dài'], color: 'emerald' },
+          fullbody: { icon: '✨', title: '360° Recovery', desc: 'Cho khách đau nhiều vị trí, muốn lựa chọn linh hoạt và chủ động chăm sóc cơ thể.', bullets: ['Dịch vụ kết hợp', 'Linh hoạt theo vùng đau'], color: 'blue' }
+        },
+        products: {
+          fitness: {
+            title: 'Phục hồi sau tập',
+            subtitle: 'Dành cho khách tập gym, người mới tập, khách đang tập với huấn luyện viên hoặc chơi thể thao cường độ cao. Nhóm sản phẩm này giúp khách phục hồi nhanh hơn, giảm cảm giác mỏi cơ và quay lại tập luyện với trạng thái tốt hơn.',
+            gradient: 'from-red-600 to-slate-950',
+            positionTitle: 'Bán cho khách đang muốn tập tốt hơn, không chỉ muốn “đỡ đau”.',
+            positionBody: 'Hãy giới thiệu đây là một phần của thói quen tập luyện: tập luyện → phục hồi → quay lại tập tốt hơn. Nhấn mạnh cảm giác nhẹ cơ, sẵn sàng cho buổi tập tiếp theo, duy trì hiệu suất và giảm rủi ro nghỉ tập vì đau mỏi.',
+            sideTitle: 'Thời điểm dễ bán',
+            side: ['Sau buổi tập nặng hoặc buổi tập với huấn luyện viên.', 'Khi khách than đau cơ, mỏi người, căng cứng.', 'Khi khách mới quay lại tập sau thời gian nghỉ.', 'Khi huấn luyện viên muốn tăng trải nghiệm chăm sóc khách.'],
+            blocks: [
+              { title: 'Gói 1A · Giãn cơ nhanh', tag: 'Dễ thử · Dễ bán', audience: 'Khách mới tập, khách vừa tập xong bị mỏi cơ, khách đang tập với huấn luyện viên nhưng cần thêm dịch vụ giúp cơ thể nhẹ hơn sau buổi tập.', benefits: 'Thư giãn vùng cơ căng cứng; giảm cảm giác nặng người sau tập; tạo cảm giác hồi phục nhanh và dễ chịu; giúp khách tự tin quay lại tập buổi tiếp theo.', usp: 'Nhanh, tiện, dễ hiểu, dễ thử. Khách không cần có vấn đề nghiêm trọng mới mua — chỉ cần mỏi cơ sau tập là có thể sử dụng.', close: 'Hôm nay anh/chị vừa tập xong, cơ đang khá căng. Mình làm 1 buổi giãn cơ nhanh để cơ thể nhẹ hơn và ngày mai không bị quá mỏi. Nếu anh/chị tập đều 2–3 buổi/tuần, gói 12 buổi sẽ tiết kiệm và hợp lý hơn.' },
+              { title: 'Gói 1B · Phục hồi vận động chuyên sâu', tag: 'Phục hồi sâu · Hỗ trợ hiệu suất', audience: 'Khách tập nặng, khách chơi thể thao, khách tập với huấn luyện viên thường xuyên, khách có mục tiêu thay đổi vóc dáng hoặc chuẩn bị cho giai đoạn tập luyện cường độ cao.', benefits: 'Phục hồi cơ chuyên sâu hơn; hỗ trợ quay lại tập luyện ở cường độ cao; duy trì nhịp tập; tối ưu hiệu suất; giảm rủi ro nghỉ tập vì đau mỏi kéo dài.', usp: 'Không chỉ phục hồi thụ động. Gói này gắn với mục tiêu tập luyện cá nhân, giúp khách quay lại tập tốt hơn và duy trì hiệu suất lâu hơn.', close: 'Với mức tập hiện tại của anh/chị, mình không nên chỉ xử lý cảm giác mỏi tạm thời. Gói phục hồi chuyên sâu sẽ phù hợp hơn vì giúp cơ thể phục hồi sâu và quay lại tập mạnh hơn, đều hơn.' }
+            ],
+            insights: [
+              { title: 'Giải thích đơn giản', body: 'Cơ thể cũng cần phục hồi như cần tập luyện. Nếu chỉ tập mà không phục hồi, khách dễ mỏi kéo dài, tập kém hiệu quả và dễ bỏ buổi.' },
+              { title: 'Cách nâng gói', body: 'Bắt đầu bằng gói lẻ cho khách mới. Nếu khách tập đều hoặc có gói huấn luyện viên, chuyển sang gói 12 buổi như thói quen phục hồi hằng tháng.' },
+              { title: 'Góc nhìn huấn luyện viên', body: 'Huấn luyện viên có thể giới thiệu như cách giúp khách hồi phục tốt hơn giữa các buổi tập, từ đó duy trì lịch tập và kết quả.' }
+            ]
+          },
+          office: {
+            title: 'Đau mỏi văn phòng',
+            subtitle: 'Dành cho dân văn phòng đau cổ vai gáy, đau lưng dưới, đau do tư thế, ngồi nhiều và ít vận động. Đây là nhóm sản phẩm có nhu cầu rộng vì vấn đề rõ, dễ nhận diện và dễ tư vấn.',
+            gradient: 'from-orange-500 to-slate-950',
+            positionTitle: 'Bán giải pháp cho lối sống văn phòng, không bán một buổi thư giãn.',
+            positionBody: 'Khách văn phòng thường quen chịu đau cổ vai gáy, đau lưng, căng cứng sau nhiều giờ làm việc. Thông điệp nên xoay quanh: giảm khó chịu, làm việc tốt hơn, vận động dễ hơn và tránh đau lặp lại do ngồi nhiều.',
+            sideTitle: 'Câu hỏi gợi mở',
+            side: ['Anh/chị có ngồi máy tính nhiều không?', 'Cổ vai gáy có hay căng vào cuối ngày không?', 'Đau lưng có lặp lại sau nhiều ngày làm việc không?', 'Khi tập gym có thấy lưng hoặc vai bị hạn chế không?'],
+            blocks: [
+              { title: 'Gói 2A · Cổ - Vai - Gáy', tag: 'Cổ · Vai · Lưng trên', audience: 'Dân văn phòng, quản lý, nhân viên làm việc máy tính lâu, khách thường xuyên căng cổ vai gáy, nhức mỏi vùng vai cổ hoặc cảm thấy cơ thể bị cứng sau giờ làm.', benefits: 'Giảm cảm giác đau mỏi cổ vai gáy; thư giãn vùng cơ căng cứng; tăng tuần hoàn sâu; giúp khách cảm thấy nhẹ vai, dễ xoay cổ, dễ tập luyện và làm việc tập trung hơn.', usp: 'Đánh đúng vấn đề phổ biến nhất của dân văn phòng: đau do tư thế và ngồi lâu. Không chỉ làm dễ chịu nhất thời, mà hướng đến vận động tốt hơn.', close: 'Tình trạng cổ vai gáy của anh/chị không phải do một ngày, mà do thói quen ngồi làm việc lâu. Nếu chỉ làm một lần khi đau thì dễ lặp lại. Em đề xuất mình đi gói 12 buổi để cơ thể được chăm sóc đều và cải thiện rõ hơn.' },
+              { title: 'Gói 2B · Thắt lưng', tag: 'Lưng dưới · Hỗ trợ tư thế', audience: 'Khách đau lưng dưới, căng cơ lưng, ngồi nhiều, ít vận động, thường bị mỏi lưng khi làm việc, lái xe hoặc tập gym.', benefits: 'Giảm căng cơ lưng; hỗ trợ vận động dễ hơn; giúp sinh hoạt thoải mái hơn; giảm cảm giác nặng lưng sau thời gian ngồi lâu; hỗ trợ quay lại tập luyện ổn định.', usp: 'Tập trung vào vấn đề lưng dưới do lối sống ít vận động. Phù hợp với khách muốn công việc, sinh hoạt và tập luyện không bị gián đoạn bởi đau lưng.', close: 'Đau lưng dưới thường lặp lại nếu mình chỉ xử lý khi đau. Mình nên làm theo liệu trình để lưng ổn định hơn, vận động dễ hơn và không ảnh hưởng đến tập luyện hoặc công việc.' }
+            ],
+            insights: [
+              { title: 'Hiểu khách hàng', body: 'Khách văn phòng thường chịu đau rất lâu trước khi mua. Hãy giúp họ thấy đây là vấn đề lối sống cần chăm sóc định kỳ, không phải chuyện nhỏ để bỏ qua.' },
+              { title: 'Cách chốt tốt nhất', body: 'Gói 12 buổi là lựa chọn hợp lý nhất vì đau do tư thế thường lặp lại. Gói lẻ chỉ phù hợp cho khách muốn thử cảm nhận trước.' },
+              { title: 'Thông điệp đơn giản', body: 'Mình không chỉ làm cho anh/chị dễ chịu hôm nay, mà giúp cơ thể vận động tốt hơn để đau mỏi ít quay lại hơn.' }
+            ]
+          },
+          senior: {
+            title: 'Golden Mobility',
+            subtitle: 'Dành cho người lớn tuổi hoặc khách có vấn đề cơ xương khớp nhẹ, đau khớp, hạn chế vận động và cần giải pháp chăm sóc vận động an toàn, đều đặn, lâu dài.',
+            gradient: 'from-emerald-600 to-slate-950',
+            positionTitle: 'Bán sự an tâm, khả năng vận động và chất lượng sống lâu dài.',
+            positionBody: 'Không nên bán như một gói “giảm đau” đơn thuần. Hãy định vị là giải pháp hỗ trợ người lớn tuổi duy trì vận động an toàn, sinh hoạt ổn định, tự tin đi lại và tiếp tục tham gia các hoạt động hằng ngày.',
+            sideTitle: 'Góc cảm xúc',
+            side: ['Người mua có thể là con cái mua cho ba mẹ.', 'Thông điệp chính là sự an tâm và chăm sóc đều đặn.', 'Nói chậm, rõ, tránh hứa hẹn quá mức.', 'Nhấn mạnh: hỗ trợ, duy trì, an toàn, ổn định.'],
+            blocks: [
+              { title: 'Gói Golden Mobility', tag: 'Vận động an toàn · Chăm sóc dài hạn', audience: 'Người lớn tuổi, khách có đau khớp nhẹ, thoái hóa nhẹ, đau cơ xương khớp không cấp, hạn chế vận động hoặc cần chăm sóc phục hồi đều đặn.', benefits: 'Hỗ trợ vận động an toàn; giúp đi lại và sinh hoạt dễ hơn; giảm cảm giác đau mỏi kéo dài; duy trì khả năng vận động ổn định; tạo cảm giác an tâm cho khách và gia đình.', usp: 'Tập trung vào vận động an toàn và chất lượng sống lâu dài. Đây là gói có giá trị cảm xúc cao vì liên quan đến sức khỏe, sự tự chủ và sự an tâm của gia đình.', close: 'Với ba mẹ/người lớn tuổi, mục tiêu không phải là làm mạnh ngay, mà là vận động an toàn, đều và ổn định. Mình nên chọn liệu trình để cơ thể thích nghi từ từ và duy trì sinh hoạt tốt hơn.' }
+            ],
+            insights: [
+              { title: 'Góc bán cho gia đình', body: 'Mình không chỉ mua dịch vụ cho ba mẹ, mình mua sự an tâm rằng ba mẹ được chăm sóc vận động đúng cách và đều đặn.' },
+              { title: 'Cách chọn gói', body: 'Không nên đẩy gói lẻ quá mạnh. Với người lớn tuổi, hiệu quả nằm ở sự đều đặn, nên gói 12 buổi hoặc gói dài hạn sẽ hợp lý hơn.' },
+              { title: 'Giọng tư vấn', body: 'Nói nhẹ nhàng, rõ ràng, tạo cảm giác an toàn. Tránh hứa hẹn quá mức. Tập trung vào hỗ trợ vận động và sinh hoạt ổn định.' }
+            ]
+          },
+          fullbody: {
+            title: '360° Recovery',
+            subtitle: 'Gói dịch vụ kết hợp cho khách đau nhiều vị trí, muốn lựa chọn linh hoạt và chủ động chăm sóc cơ thể. Phù hợp với khách VIP, khách chăm sóc dài hạn hoặc khách muốn giải pháp toàn diện.',
+            gradient: 'from-blue-600 to-slate-950',
+            positionTitle: 'Bán sự linh hoạt: hôm nay đau vai, tuần sau đau lưng, tháng sau cần phục hồi toàn thân.',
+            positionBody: 'Phù hợp với khách không muốn bị giới hạn vào một vùng đau cố định. Gói này giúp khách chủ động chăm sóc cơ thể theo tình trạng thực tế từng thời điểm, đặc biệt phù hợp với khách tập luyện thường xuyên, khách bận rộn hoặc khách muốn chăm sóc sức khỏe dài hạn.',
+            sideTitle: 'Khách phù hợp nhất',
+            side: ['Khách VIP muốn gói phục hồi dài hạn.', 'Khách đau nhiều vùng khác nhau.', 'Khách mua cho gia đình.', 'Khách muốn chăm sóc chủ động, không đợi đau mới xử lý.'],
+            blocks: [
+              { title: 'Gói 360° Recovery', tag: 'Linh hoạt · Cao cấp · Chủ động', audience: 'Khách đau nhiều vị trí, khách VIP, khách có lịch tập luyện hoặc làm việc căng thẳng, khách muốn có một gói phục hồi linh hoạt để sử dụng theo nhu cầu thực tế của cơ thể.', benefits: 'Chủ động phòng ngừa; linh hoạt lựa chọn vùng đau; phù hợp nhiều tình huống; dùng cho chăm sóc dài hạn; giúp khách cảm thấy được chăm sóc toàn diện hơn thay vì mua từng dịch vụ rời.', usp: 'Một gói linh hoạt và cao cấp hơn, giúp khách chủ động quản lý cơ thể. Nhân viên có thể bán như một gói chăm sóc vận động dài hạn cho khách sử dụng theo từng nhu cầu.', close: 'Nếu anh/chị chỉ đau một vùng thì mình có thể chọn gói chuyên biệt. Nhưng nếu anh/chị thường đau nhiều điểm hoặc muốn chăm sóc lâu dài, 360° Recovery sẽ linh hoạt và đáng tiền hơn vì mỗi buổi mình xử lý theo tình trạng thực tế của cơ thể.' }
+            ],
+            insights: [
+              { title: 'Cách định vị cao cấp', body: 'Đừng bán như “mua nhiều buổi cho rẻ”. Hãy bán như một gói chăm sóc cơ thể linh hoạt, dành cho khách muốn chủ động phục hồi lâu dài.' },
+              { title: 'Cách chốt tốt nhất', body: 'Gói 50 buổi là điểm vào cho khách nghiêm túc. Gói từ 100 buổi phù hợp khách VIP, gia đình hoặc khách có thói quen chăm sóc sức khỏe định kỳ.' },
+              { title: 'Thông điệp đơn giản', body: 'Cơ thể không đau cố định một chỗ. Gói này cho anh/chị sự linh hoạt để chăm sóc đúng vùng cần thiết ở từng thời điểm.' }
+            ]
+          }
+        }
+      },
+      en: {
+        appTitle: 'Recovery & Movement Care Sales Tool',
+        nav: {
+          home: 'Home',
+          fitness: 'Fitness Recovery',
+          office: 'Office Pain Relief',
+          senior: 'Golden Mobility',
+          fullbody: '360° Recovery'
+        },
+        hero: {
+          badge: 'New Product · Staff Sales Guide',
+          title: 'Not just pain relief. Help customers move better, train better, and live healthier.',
+          subtitle: 'This page helps staff select the right package, explain the value clearly, quote consistently, and close based on the customer’s real needs.',
+          selector: 'Quick need selector'
+        },
+        quick: {
+          fitness: 'New to training / post-workout soreness → Fitness Recovery',
+          office: 'Office worker / neck, shoulder, back pain → Office Pain Relief',
+          senior: 'Older adult / joint pain / limited movement → Golden Mobility',
+          fullbody: 'Multiple pain areas / needs flexibility → 360° Recovery'
+        },
+        home: {
+          title: 'Home · Product Overview',
+          subtitle: 'Staff can quickly view the product groups and click each package for details.',
+          rule: 'Rule: Sell as recovery, movement care, and wellness — not as medical treatment.',
+          detailBtn: 'View details',
+          boxes: [
+            { title: 'Quick package selection', body: 'Post-workout soreness: Fitness Recovery. Pain from sitting: Office Pain Relief. Older adults or joint discomfort: Golden Mobility. Multiple pain areas: 360° Recovery.' },
+            { title: 'How to sell', body: 'Single session is for trial. 12-session package is for clear pain points. 50 or 100-session packages are for VIPs, families, or long-term care.' },
+            { title: 'Key message', body: 'This service does not only help customers feel better today; it helps their body move better for training, work, and daily life.' }
+          ]
+        },
+        labels: {
+          back: '← Back to Home',
+          position: 'Product positioning',
+          audience: 'Target customer',
+          benefits: 'Key benefits',
+          usp: 'Unique selling point',
+          close: 'Sample closing line',
+          priceTitle: 'Pricing ladder',
+          objectionTitle: 'Objection handling',
+          staffReminder: 'Staff reminder',
+          perSession: 'VND / 60-min session',
+          single: 'Single',
+          combo12: '12-session package',
+          combo50: '50-session package',
+          combo100: '100+ session package',
+          singleNote: 'Best for trial.',
+          combo12Note: 'Best for customers with a clear pain point.',
+          combo50Note: 'For customers needing flexible multi-area care.',
+          combo100Note: 'For VIPs, families, and long-term care.'
+        },
+        objections: [
+          { q: '“Why is it expensive?”', a: 'This is movement care with a recovery direction, not a standard relaxation massage. The goal is to help the body move better and return to training, work, and daily life more comfortably.' },
+          { q: '“My pain is only mild.”', a: 'Mild discomfort is the best time to take care of it early, before it repeats and affects training or work.' },
+          { q: '“I need to think about it.”', a: 'We can start with one trial session so you can feel the difference first. If it works for you, we can move to a package to optimize the cost.' }
+        ],
+        staffText: 'Do not use “cure” or “medical treatment” language. Use: recovery, movement care, better movement, better daily function.',
+        staffWords: ['Recovery', 'Movement care', 'Move better', 'Daily function'],
+        cards: {
+          fitness: { icon: '🏋️', title: 'Fitness Recovery', desc: 'For customers with muscle soreness after training, new gym users, or customers training with a PT.', bullets: ['Quick Recovery', 'Advanced Movement Recovery'], color: 'red' },
+          office: { icon: '💻', title: 'Office Pain Relief', desc: 'For office workers with neck, shoulder, lower-back pain, posture-related pain, and long sitting hours.', bullets: ['Neck - Shoulder', 'Lower Back'], color: 'orange' },
+          senior: { icon: '🌿', title: 'Golden Mobility', desc: 'For older adults or customers with mild joint and musculoskeletal discomfort or limited mobility.', bullets: ['Safe movement', 'Long-term daily function'], color: 'emerald' },
+          fullbody: { icon: '✨', title: '360° Recovery', desc: 'For customers with multiple pain areas who want flexibility and proactive body care.', bullets: ['Mixed services', 'Flexible by pain area'], color: 'blue' }
+        },
+        products: {
+          fitness: {
+            title: 'Fitness Recovery',
+            subtitle: 'For gym members, new trainees, PT clients, or high-intensity sport users. This product group helps customers recover faster, reduce muscle soreness, and return to training in better condition.',
+            gradient: 'from-red-600 to-slate-950',
+            positionTitle: 'Sell to customers who want to train better, not just feel less sore.',
+            positionBody: 'Position it as part of a training routine: train → recover → train better. Focus on lighter muscles, readiness for the next session, performance consistency, and reducing the risk of skipping workouts due to soreness.',
+            sideTitle: 'Best timing to sell',
+            side: ['After a hard workout or PT session.', 'When the customer complains about soreness, fatigue, or tight muscles.', 'When the customer returns to training after a break.', 'When PT wants to improve the customer care experience.'],
+            blocks: [
+              { title: 'Package 1A · Quick Recovery', tag: 'Easy trial · Easy close', audience: 'New trainees, customers who feel sore after a workout, or PT clients who need support to feel lighter after training.', benefits: 'Relaxes tight muscles; reduces heavy post-workout feeling; creates a faster and more comfortable recovery experience; helps customers feel ready for the next workout.', usp: 'Fast, convenient, easy to understand, and easy to try. Customers do not need a serious issue — post-workout soreness is enough reason to use it.', close: 'You just finished training and your muscles are quite tight. Let’s do one Quick Recovery session so your body feels lighter and tomorrow’s soreness is reduced. If you train 2–3 times per week, the 12-session package will be more cost-effective.' },
+              { title: 'Package 1B · Advanced Movement Recovery', tag: 'Deep recovery · Performance support', audience: 'Heavy trainees, sport players, frequent PT clients, transformation-focused customers, or customers entering a high-intensity training period.', benefits: 'Deeper muscle recovery; supports return to high-intensity training; maintains training rhythm; optimizes performance; reduces the risk of long soreness interrupting training.', usp: 'Not passive recovery only. This package connects recovery with personal training goals, helping customers return to training better and sustain performance longer.', close: 'With your current training level, we should not only manage short-term soreness. Advanced Movement Recovery is more suitable because it supports deeper recovery and helps you train stronger and more consistently.' }
+            ],
+            insights: [
+              { title: 'Simple explanation', body: 'The body needs recovery just as much as training. If customers train without recovery, soreness can last longer, performance drops, and they may skip sessions.' },
+              { title: 'Upsell logic', body: 'Start with a single session for new customers. If they train consistently or have PT sessions, move them to a 12-session monthly recovery routine.' },
+              { title: 'PT angle', body: 'PTs can present this as a way to help customers recover better between sessions, maintain attendance, and achieve better results.' }
+            ]
+          },
+          office: {
+            title: 'Office Pain Relief',
+            subtitle: 'For office workers with neck, shoulder, lower-back, posture-related pain, long sitting hours, and low movement. This product has a broad need because the pain point is clear and easy to identify.',
+            gradient: 'from-orange-500 to-slate-950',
+            positionTitle: 'Sell a solution for office lifestyle, not a relaxation session.',
+            positionBody: 'Office customers often tolerate neck, shoulder, and lower-back pain after long work hours. The message should focus on comfort, better work performance, easier movement, and reducing repeated discomfort caused by long sitting.',
+            sideTitle: 'Trigger questions',
+            side: ['Do you sit at a computer for long hours?', 'Do your neck and shoulders feel tight at the end of the day?', 'Does lower-back discomfort repeat after several workdays?', 'Do your back or shoulders limit you when training?'],
+            blocks: [
+              { title: 'Package 2A · Neck - Shoulder', tag: 'Neck · Shoulder · Upper back', audience: 'Office workers, managers, computer users, and customers who frequently feel neck and shoulder tightness or upper-body stiffness after work.', benefits: 'Reduces neck and shoulder discomfort; relaxes tight muscles; improves deep circulation; helps customers feel lighter in the shoulders, turn the neck more easily, train better, and focus better at work.', usp: 'Targets the most common office pain point: posture and long sitting. It is not just temporary comfort; it aims to support better movement.', close: 'Your neck and shoulder issue is not from one day; it comes from long sitting habits. If we only do one session when it hurts, it can repeat. I suggest the 12-session package for more consistent care and clearer improvement.' },
+              { title: 'Package 2B · Lower Back', tag: 'Lower back · Posture support', audience: 'Customers with lower-back discomfort, tight back muscles, long sitting hours, low movement, or back soreness from work, driving, or gym training.', benefits: 'Reduces lower-back tightness; supports easier movement; makes daily activities more comfortable; reduces heavy-back feeling after long sitting; supports stable return to training.', usp: 'Focuses on lower-back issues from a low-movement lifestyle. Suitable for customers who do not want work, daily life, or training interrupted by back discomfort.', close: 'Lower-back discomfort often repeats if we only handle it when it hurts. A package approach helps your back feel more stable, move easier, and avoid affecting work or training.' }
+            ],
+            insights: [
+              { title: 'Customer insight', body: 'Office customers often tolerate discomfort for too long before buying. Help them see this as a lifestyle issue that needs regular care, not something small to ignore.' },
+              { title: 'Best close', body: 'The 12-session package is the most logical option because posture-related discomfort often repeats. A single session is best only for trial.' },
+              { title: 'Simple message', body: 'We are not only helping you feel better today; we are helping your body move better so discomfort returns less often.' }
+            ]
+          },
+          senior: {
+            title: 'Golden Mobility',
+            subtitle: 'For older adults or customers with mild joint discomfort, limited movement, and a need for safe, consistent, long-term movement care.',
+            gradient: 'from-emerald-600 to-slate-950',
+            positionTitle: 'Sell peace of mind, movement ability, and long-term quality of life.',
+            positionBody: 'Do not sell it only as pain relief. Position it as a safe movement-care solution that helps older adults maintain daily function, move with more confidence, and stay active in everyday life.',
+            sideTitle: 'Emotional angle',
+            side: ['The buyer may be an adult child buying for parents.', 'The core message is peace of mind and consistent care.', 'Speak slowly and clearly; avoid overpromising.', 'Emphasize support, maintenance, safety, and stability.'],
+            blocks: [
+              { title: 'Golden Mobility Package', tag: 'Safe movement · Long-term care', audience: 'Older adults, customers with mild joint discomfort, mild degeneration, non-acute musculoskeletal discomfort, limited movement, or a need for consistent recovery care.', benefits: 'Supports safer movement; makes walking and daily activities easier; reduces long-lasting discomfort; maintains stable movement ability; creates peace of mind for customers and families.', usp: 'Focuses on safe movement and long-term quality of life. This package has high emotional value because it connects to health, independence, and family reassurance.', close: 'For parents or older adults, the goal is not to push hard immediately. The goal is safe, consistent, stable movement. A package helps the body adapt gradually and maintain better daily function.' }
+            ],
+            insights: [
+              { title: 'Family selling angle', body: 'You are not only buying a service for your parents; you are buying peace of mind that they receive proper and consistent movement care.' },
+              { title: 'Package logic', body: 'Do not push single sessions too strongly. For older adults, consistency matters, so 12 sessions or a longer package makes more sense.' },
+              { title: 'Tone of voice', body: 'Speak gently and clearly. Create a sense of safety. Avoid overpromising. Focus on movement support and stable daily function.' }
+            ]
+          },
+          fullbody: {
+            title: '360° Recovery',
+            subtitle: 'A mixed-service package for customers with multiple pain areas who want flexibility and proactive body care. Suitable for VIPs, long-term care customers, or customers wanting a more complete solution.',
+            gradient: 'from-blue-600 to-slate-950',
+            positionTitle: 'Sell flexibility: shoulder today, back next week, full-body recovery next month.',
+            positionBody: 'Suitable for customers who do not want to be limited to one fixed pain area. This package helps them care for the body based on real conditions at each visit, especially frequent trainees, busy customers, or long-term wellness customers.',
+            sideTitle: 'Best-fit customers',
+            side: ['VIP customers who want long-term recovery care.', 'Customers with multiple pain areas.', 'Customers buying for family use.', 'Customers who prefer proactive care instead of waiting for pain.'],
+            blocks: [
+              { title: '360° Recovery Package', tag: 'Flexible · Premium · Proactive', audience: 'Customers with multiple pain areas, VIP customers, customers with intense training or work schedules, and customers wanting a flexible recovery package based on real body needs.', benefits: 'Proactive care; flexible by pain area; suitable for many situations; supports long-term care; makes customers feel more fully cared for instead of buying separate services one by one.', usp: 'A more flexible and premium package that helps customers manage their body proactively. Staff can sell it as a long-term movement-care package for different needs over time.', close: 'If you only have one pain area, we can choose a specific package. But if you often have multiple areas or want long-term care, 360° Recovery is more flexible and valuable because each session follows your body’s real condition.' }
+            ],
+            insights: [
+              { title: 'Premium framing', body: 'Do not sell it as “buy more sessions for cheaper.” Sell it as a flexible body-care package for customers who want proactive long-term recovery.' },
+              { title: 'Best close', body: '50 sessions is the entry point for serious customers. 100+ sessions fit VIPs, families, or customers with a regular wellness routine.' },
+              { title: 'Simple message', body: 'The body does not always hurt in one fixed area. This package gives you flexibility to care for the right area at the right time.' }
+            ]
+          }
+        }
+      }
+    };
+
+    function escapeHTML(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function colorClasses(color) {
+      const map = {
+        red: 'bg-red-100 text-red-700',
+        orange: 'bg-orange-100 text-orange-700',
+        emerald: 'bg-emerald-100 text-emerald-700',
+        blue: 'bg-blue-100 text-blue-700'
+      };
+      return map[color] || map.red;
+    }
+
+    function setStaticText() {
+      const text = i18n[currentLang];
+      document.documentElement.lang = currentLang;
+      document.querySelectorAll('[data-i18n="appTitle"]').forEach(el => { el.textContent = text.appTitle; });
+      document.getElementById('btn-vi').className = currentLang === 'vi'
+        ? 'lang-btn px-4 py-2 rounded-full text-sm font-black bg-red-600 text-white'
+        : 'lang-btn px-4 py-2 rounded-full text-sm font-black text-slate-600';
+      document.getElementById('btn-en').className = currentLang === 'en'
+        ? 'lang-btn px-4 py-2 rounded-full text-sm font-black bg-red-600 text-white'
+        : 'lang-btn px-4 py-2 rounded-full text-sm font-black text-slate-600';
+    }
+
+    function renderNav() {
+      const nav = document.getElementById('mainNav');
+      const labels = i18n[currentLang].nav;
+      nav.innerHTML = PAGE_KEYS.map(page => `
+        <button type="button" data-page="${page}" class="nav-tab shrink-0 px-4 py-2 rounded-full text-sm font-bold ${page === currentPage ? 'tab-active' : 'tab-inactive'}">
+          ${escapeHTML(labels[page])}
+        </button>
+      `).join('');
+      nav.querySelectorAll('[data-page]').forEach(btn => {
+        btn.addEventListener('click', () => showPage(btn.dataset.page));
+      });
+    }
+
+    function renderApp() {
+      setStaticText();
+      renderNav();
+      const app = document.getElementById('app');
+      app.innerHTML = renderHero() + renderCurrentPage();
+      attachPageEvents();
+    }
+
+    function renderHero() {
+      const text = i18n[currentLang];
+      return `
+        <section class="rounded-[2rem] bg-gradient-to-br from-slate-950 via-slate-900 to-red-950 text-white p-6 lg:p-10 mb-8 shadow-2xl">
+          <div class="grid lg:grid-cols-2 gap-8 items-center">
+            <div>
+              <div class="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-4 py-2 text-sm font-bold mb-5">${escapeHTML(text.hero.badge)}</div>
+              <h2 class="text-3xl lg:text-5xl font-black leading-tight mb-4">${escapeHTML(text.hero.title)}</h2>
+              <p class="text-slate-200 text-base lg:text-lg max-w-2xl">${escapeHTML(text.hero.subtitle)}</p>
+            </div>
+            <div class="bg-white/10 border border-white/15 rounded-3xl p-5">
+              <div class="text-sm uppercase tracking-widest text-red-200 font-bold mb-3">${escapeHTML(text.hero.selector)}</div>
+              <div class="grid gap-3">
+                ${PRODUCT_KEYS.map(key => `<button type="button" data-page="${key}" class="quick-btn text-left bg-white text-slate-900 rounded-2xl p-4 font-bold hover:bg-red-50">${escapeHTML(text.quick[key])}</button>`).join('')}
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderCurrentPage() {
+      return currentPage === 'home' ? renderHome() : renderProductPage(currentPage);
+    }
+
+    function renderHome() {
+      const text = i18n[currentLang];
+      return `
+        <section id="page-home" class="page fade-in">
+          <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-2xl lg:text-3xl font-black">${escapeHTML(text.home.title)}</h2>
+              <p class="text-slate-600 mt-2">${escapeHTML(text.home.subtitle)}</p>
+            </div>
+            <div class="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-2xl font-bold">${escapeHTML(text.home.rule)}</div>
+          </div>
+          <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+            ${PRODUCT_KEYS.map(key => renderProductCard(key)).join('')}
+          </div>
+          <section class="grid lg:grid-cols-3 gap-5">
+            ${text.home.boxes.map(box => renderInfoBox(box.title, box.body)).join('')}
+          </section>
+        </section>
+      `;
+    }
+
+    function renderProductCard(key) {
+      const text = i18n[currentLang];
+      const card = text.cards[key];
+      return `
+        <article class="product-card bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
+          <div class="h-12 w-12 rounded-2xl ${colorClasses(card.color)} flex items-center justify-center text-2xl mb-4">${escapeHTML(card.icon)}</div>
+          <h3 class="text-xl font-black mb-2">${escapeHTML(card.title)}</h3>
+          <p class="text-slate-600 mb-4">${escapeHTML(card.desc)}</p>
+          <div class="space-y-2 text-sm mb-5">
+            ${card.bullets.map(item => `<div class="font-bold">• ${escapeHTML(item)}</div>`).join('')}
+          </div>
+          <button type="button" data-page="${key}" class="card-btn w-full bg-slate-900 text-white rounded-2xl py-3 font-black hover:bg-red-600">${escapeHTML(text.home.detailBtn)}</button>
+        </article>
+      `;
+    }
+
+    function renderInfoBox(title, body) {
+      return `
+        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
+          <h3 class="text-lg font-black mb-3">${escapeHTML(title)}</h3>
+          <p class="text-sm text-slate-600">${escapeHTML(body)}</p>
+        </div>
+      `;
+    }
+
+    function renderProductPage(key) {
+      const text = i18n[currentLang];
+      const labels = text.labels;
+      const product = text.products[key];
+      return `
+        <section id="page-${key}" class="page fade-in">
+          <div class="mb-6">
+            <button type="button" data-page="home" class="back-btn mb-4 text-sm font-bold text-red-600 hover:underline">${escapeHTML(labels.back)}</button>
+            <h2 class="text-3xl lg:text-4xl font-black">${escapeHTML(product.title)}</h2>
+            <p class="text-slate-600 mt-2 max-w-3xl">${escapeHTML(product.subtitle)}</p>
+          </div>
+          <div class="grid lg:grid-cols-3 gap-5 mb-6">
+            <div class="lg:col-span-2 text-white rounded-3xl p-6 shadow-lg bg-gradient-to-br ${escapeHTML(product.gradient)}">
+              <div class="text-sm uppercase tracking-widest text-white/70 font-black mb-3">${escapeHTML(labels.position)}</div>
+              <h3 class="text-2xl lg:text-3xl font-black mb-3">${escapeHTML(product.positionTitle)}</h3>
+              <p class="text-white/90 leading-relaxed">${escapeHTML(product.positionBody)}</p>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+              <div class="text-sm uppercase tracking-widest text-slate-400 font-black mb-3">${escapeHTML(product.sideTitle)}</div>
+              <ul class="space-y-3 text-sm text-slate-700">
+                ${product.side.map(item => `<li>• ${escapeHTML(item)}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+          <div class="grid lg:grid-cols-2 gap-5">
+            ${product.blocks.map(block => renderProductBlock(block, labels)).join('')}
+          </div>
+          <div class="grid lg:grid-cols-3 gap-5 mt-6">
+            ${product.insights.map(item => renderInfoBox(item.title, item.body)).join('')}
+          </div>
+          ${renderPricing(key, labels)}
+          ${renderObjections(text)}
+        </section>
+      `;
+    }
+
+    function renderProductBlock(block, labels) {
+      return `
+        <article class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+          <div class="inline-flex bg-red-50 text-red-700 rounded-full px-3 py-1 text-xs font-black mb-4">${escapeHTML(block.tag)}</div>
+          <h3 class="text-2xl font-black mb-5">${escapeHTML(block.title)}</h3>
+          <div class="space-y-5">
+            ${renderField(labels.audience, block.audience)}
+            ${renderField(labels.benefits, block.benefits)}
+            ${renderField(labels.usp, block.usp)}
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+              <div class="text-xs uppercase tracking-widest text-red-500 font-black mb-1">${escapeHTML(labels.close)}</div>
+              <p class="text-slate-800 font-semibold">${escapeHTML(block.close)}</p>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderField(label, body) {
+      return `
+        <div>
+          <div class="text-xs uppercase tracking-widest text-slate-400 font-black mb-1">${escapeHTML(label)}</div>
+          <p class="text-slate-700">${escapeHTML(body)}</p>
+        </div>
+      `;
+    }
+
+    function renderPricing(key, labels) {
+      const cards = key === 'fullbody'
+        ? [
+            { name: labels.combo50, price: '1,090,000', note: labels.combo50Note, hot: true },
+            { name: labels.combo100, price: '990,000', note: labels.combo100Note, hot: false }
+          ]
+        : [
+            { name: labels.single, price: '1,290,000', note: labels.singleNote, hot: false },
+            { name: labels.combo12, price: '1,090,000', note: labels.combo12Note, hot: true },
+            { name: labels.combo100, price: '990,000', note: labels.combo100Note, hot: false }
+          ];
+      return `
+        <section class="mt-6 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+          <h3 class="text-2xl font-black mb-4">${escapeHTML(labels.priceTitle)}</h3>
+          <div class="grid ${key === 'fullbody' ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-4">
+            ${cards.map(card => renderPriceCard(card, labels.perSession)).join('')}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderPriceCard(card, perSession) {
+      const cls = card.hot ? 'rounded-2xl border border-red-200 bg-red-50 p-5' : 'rounded-2xl border border-slate-200 p-5';
+      return `
+        <div class="${cls}">
+          <div class="font-black text-lg">${escapeHTML(card.name)}</div>
+          <div class="text-2xl font-black text-red-600 mt-2">${escapeHTML(card.price)}</div>
+          <div class="text-sm text-slate-500">${escapeHTML(perSession)}</div>
+          <div class="mt-3 text-sm font-semibold">${escapeHTML(card.note)}</div>
+        </div>
+      `;
+    }
+
+    function renderObjections(text) {
+      return `
+        <section class="mt-6 grid lg:grid-cols-2 gap-5">
+          <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+            <h3 class="text-2xl font-black mb-4">${escapeHTML(text.labels.objectionTitle)}</h3>
+            <div class="space-y-4 text-sm">
+              ${text.objections.map(item => `<div class="border-l-4 border-red-500 pl-4"><b>${escapeHTML(item.q)}</b><br>${escapeHTML(item.a)}</div>`).join('')}
+            </div>
+          </div>
+          <div class="bg-slate-900 text-white rounded-3xl p-6 shadow-sm">
+            <h3 class="text-2xl font-black mb-4">${escapeHTML(text.labels.staffReminder)}</h3>
+            <p class="text-slate-200 mb-4">${escapeHTML(text.staffText)}</p>
+            <div class="grid grid-cols-2 gap-3 text-sm font-bold">
+              ${text.staffWords.map(word => `<div class="bg-white/10 rounded-2xl p-3">${escapeHTML(word)}</div>`).join('')}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function attachPageEvents() {
+      document.querySelectorAll('[data-page]').forEach(button => {
+        button.addEventListener('click', () => showPage(button.dataset.page));
+      });
+    }
+
+    function showPage(page, scroll = true) {
+      if (!PAGE_KEYS.includes(page)) {
+        console.warn('Unknown page:', page);
+        return;
+      }
+      currentPage = page;
+      renderApp();
+      if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setLang(lang) {
+      if (!i18n[lang]) {
+        console.warn('Unknown language:', lang);
+        return;
+      }
+      currentLang = lang;
+      renderApp();
+    }
+
+    function runSelfTests() {
+      const requiredLangs = ['vi', 'en'];
+      const errors = [];
+      requiredLangs.forEach(lang => {
+        if (!i18n[lang]) errors.push(`Missing language: ${lang}`);
+        PAGE_KEYS.forEach(page => {
+          if (!i18n[lang].nav[page]) errors.push(`Missing nav ${lang}.${page}`);
+        });
+        PRODUCT_KEYS.forEach(product => {
+          if (!i18n[lang].products[product]) errors.push(`Missing product ${lang}.${product}`);
+          if (!i18n[lang].cards[product]) errors.push(`Missing card ${lang}.${product}`);
+        });
+      });
+      if (typeof showPage !== 'function') errors.push('showPage is not defined');
+      if (typeof setLang !== 'function') errors.push('setLang is not defined');
+      if (errors.length) {
+        console.error('Self-test failed:', errors);
+      } else {
+        console.info('Self-test passed: navigation, languages, and product data are ready.');
+      }
+    }
+
+    window.showPage = showPage;
+    window.setLang = setLang;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.lang-btn').forEach(button => {
+        button.addEventListener('click', () => setLang(button.dataset.lang));
+      });
+      renderApp();
+      runSelfTests();
+    });
+  </script>
+</body>
+</html>
