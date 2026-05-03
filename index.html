@@ -618,7 +618,7 @@
       setStaticText();
       renderNav();
       const app = document.getElementById('app');
-      app.innerHTML = renderHero() + renderCurrentPage();
+      app.innerHTML = (currentPage === 'home' ? renderHero() : '') + renderCurrentPage();
       attachPageEvents();
     }
 
@@ -661,7 +661,8 @@
           <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
             ${PRODUCT_KEYS.map(key => renderProductCard(key)).join('')}
           </div>
-          <section class="grid lg:grid-cols-3 gap-5">
+          ${renderDemandSection(text)}
+          <section class="grid lg:grid-cols-3 gap-5 mt-6">
             ${text.home.boxes.map(box => renderInfoBox(box.title, box.body)).join('')}
           </section>
         </section>
@@ -717,7 +718,6 @@
               </ul>
             </div>
           </div>
-          ${renderDemandSection(text)}
           <div class="grid lg:grid-cols-2 gap-5">
             ${product.blocks.map(block => renderProductBlock(block, labels)).join('')}
           </div>
