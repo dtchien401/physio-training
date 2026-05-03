@@ -767,9 +767,7 @@
               </ul>
             </div>
           </div>
-          <div class="grid lg:grid-cols-2 gap-5">
-            ${product.blocks.map(block => renderProductBlock(block, labels)).join('')}
-          </div>
+          ${renderProductBlocks(product, labels)}
           <div class="grid lg:grid-cols-3 gap-5 mt-6">
             ${product.insights.map(item => renderInfoBox(item.title, item.body)).join('')}
           </div>
@@ -861,6 +859,21 @@
             <p class="font-semibold text-slate-100">${escapeHTML(playbook.close)}</p>
           </div>
         </section>
+      `;
+    }
+
+    function renderProductBlocks(product, labels) {
+      const blocks = Array.isArray(product.blocks) ? product.blocks : [];
+      const isSingle = blocks.length === 1;
+      const gridClass = isSingle ? 'grid grid-cols-1 gap-5' : 'grid lg:grid-cols-2 gap-5';
+      return `
+        <div class="${gridClass}">
+          ${blocks.map(block => `
+            <div class="${isSingle ? 'w-full' : ''}">
+              ${renderProductBlock(block, labels)}
+            </div>
+          `).join('')}
+        </div>
       `;
     }
 
