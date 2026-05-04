@@ -16,17 +16,59 @@
     .product-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(15, 23, 42, .08); }
     .fade-in { animation: fadeIn .25s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Mobile optimization: reduce header height and replace big tab block with dropdown */
+    #mobilePageSelect { display: none; }
+
+    @media (max-width: 768px) {
+      header {
+        position: relative !important;
+        top: auto !important;
+      }
+
+      header h1 {
+        font-size: 1.05rem !important;
+        line-height: 1.2 !important;
+      }
+
+      #mainNav {
+        display: none !important;
+      }
+
+      #mobilePageSelect {
+        display: block !important;
+        width: 100%;
+      }
+
+      main#app {
+        padding-top: 1rem !important;
+      }
+    }
+
+
+    @media (min-width: 769px) {
+      #mainNav {
+        flex-wrap: nowrap !important;
+      }
+      .nav-tab {
+        min-width: auto !important;
+        max-width: none !important;
+        white-space: nowrap !important;
+      }
+    }
+
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
   <header class="sticky top-0 z-50 border-b border-slate-200 glass">
-    <div class="max-w-[1600px] mx-auto px-4 py-3 flex flex-col 2xl:flex-row gap-4 2xl:items-center 2xl:justify-between">
+    <div class="max-w-[1800px] mx-auto px-4 py-3 flex flex-col xl:flex-row gap-4 xl:items-center xl:justify-between">
       <div>
         <div class="text-xs font-bold tracking-[0.25em] text-red-600 uppercase">California Wellness Group</div>
         <h1 class="text-xl lg:text-2xl font-black" data-i18n="appTitle">CALI PROPHYSIO</h1>
       </div>
-      <div class="flex flex-col lg:flex-row gap-3 lg:items-center">
-        <nav id="mainNav" class="flex flex-wrap gap-2 justify-start 2xl:justify-end"></nav>
+      <div class="flex flex-col xl:flex-row gap-3 xl:items-center">
+        <nav id="mainNav" class="hidden md:flex flex-nowrap gap-2 justify-start xl:justify-end items-center"></nav>
+        <select id="mobilePageSelect" class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-black shadow-sm"></select>
         <div class="flex bg-white border border-slate-200 rounded-full p-1 shadow-sm w-fit">
           <button id="btn-vi" type="button" class="lang-btn px-4 py-2 rounded-full text-sm font-black" data-lang="vi">VI</button>
           <button id="btn-en" type="button" class="lang-btn px-4 py-2 rounded-full text-sm font-black" data-lang="en">EN</button>
@@ -707,14 +749,25 @@
     function renderNav() {
       const nav = document.getElementById('mainNav');
       const labels = i18n[currentLang].nav;
+
       nav.innerHTML = PAGE_KEYS.map(page => `
-        <button type="button" data-page="${page}" class="nav-tab min-w-[150px] max-w-[220px] px-4 py-3 rounded-2xl text-sm font-black leading-tight text-center whitespace-normal ${page === currentPage ? 'tab-active' : 'tab-inactive'}">
+        <button type="button" data-page="${page}" class="nav-tab px-3 xl:px-4 py-2.5 rounded-full text-xs xl:text-sm font-black leading-tight text-center whitespace-nowrap ${page === currentPage ? 'tab-active' : 'tab-inactive'}">
           ${escapeHTML(labels[page])}
         </button>
       `).join('');
+
       nav.querySelectorAll('[data-page]').forEach(btn => {
         btn.addEventListener('click', () => showPage(btn.dataset.page));
       });
+
+      const mobileSelect = document.getElementById('mobilePageSelect');
+      if (mobileSelect) {
+        mobileSelect.innerHTML = PAGE_KEYS.map(page => `
+          <option value="${page}">${escapeHTML(labels[page])}</option>
+        `).join('');
+        mobileSelect.value = currentPage;
+        mobileSelect.onchange = () => showPage(mobileSelect.value);
+      }
     }
 
     function renderApp() {
