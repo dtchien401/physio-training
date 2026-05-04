@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>CALI PROPHYSIO</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -19,13 +20,13 @@
 </head>
 <body class="bg-slate-50 text-slate-900">
   <header class="sticky top-0 z-50 border-b border-slate-200 glass">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col xl:flex-row gap-3 xl:items-center xl:justify-between">
+    <div class="max-w-[1600px] mx-auto px-4 py-3 flex flex-col 2xl:flex-row gap-4 2xl:items-center 2xl:justify-between">
       <div>
         <div class="text-xs font-bold tracking-[0.25em] text-red-600 uppercase">California Wellness Group</div>
         <h1 class="text-xl lg:text-2xl font-black" data-i18n="appTitle">CALI PROPHYSIO</h1>
       </div>
       <div class="flex flex-col lg:flex-row gap-3 lg:items-center">
-        <nav id="mainNav" class="flex gap-2 overflow-x-auto pb-1 lg:pb-0"></nav>
+        <nav id="mainNav" class="flex flex-wrap gap-2 justify-start 2xl:justify-end"></nav>
         <div class="flex bg-white border border-slate-200 rounded-full p-1 shadow-sm w-fit">
           <button id="btn-vi" type="button" class="lang-btn px-4 py-2 rounded-full text-sm font-black" data-lang="vi">VI</button>
           <button id="btn-en" type="button" class="lang-btn px-4 py-2 rounded-full text-sm font-black" data-lang="en">EN</button>
@@ -73,9 +74,9 @@
           subtitle: 'Nhân viên nhìn nhanh các nhóm sản phẩm và bấm vào từng gói để xem chi tiết.',
           rule: 'Nguyên tắc: Bán theo hướng phục hồi, chăm sóc vận động, nâng cao sức khỏe — không bán như điều trị y tế.',
           detailBtn: 'Xem chi tiết',
-          positioningKicker: 'Định vị Cali ProPhysio',
+          positioningKicker: 'Định vị California ProPhysio',
           positioningTitle: 'Cầu nối giữa tập luyện và phục hồi',
-          positioningBody: 'Cali ProPhysio là cầu nối giữa luyện tập thể chất và chăm sóc phục hồi, giúp khách giảm đau mỏi nhanh hơn, cải thiện hiệu suất vận động và chủ động phòng ngừa chấn thương.',
+          positioningBody: 'California ProPhysio là cầu nối giữa luyện tập thể chất và chăm sóc phục hồi, giúp khách giảm đau mỏi nhanh hơn, cải thiện hiệu suất vận động và chủ động phòng ngừa chấn thương.',
           valueTitle: 'Giá trị cốt lõi',
           values: [
             { title: 'Hành trình khép kín', body: 'Từ phục hồi → tái huấn luyện vận động → phòng ngừa chấn thương ngay trong môi trường tập luyện của California.' },
@@ -84,6 +85,16 @@
             { title: 'Cá nhân hóa theo tình trạng', body: 'Mỗi khách hàng được tư vấn theo tình trạng vận động, vùng đau mỏi, mục tiêu tập luyện và nhu cầu chăm sóc riêng.' },
             { title: 'Tích hợp hệ sinh thái Wellness', body: 'Kết nối với tập luyện, dinh dưỡng, PT và lifestyle để xây dựng hành trình sức khỏe toàn diện, bền vững.' }
           ],
+          video: {
+            kicker: 'Video thực tế tại club',
+            title: 'Trải nghiệm thực tế tại ProPhysio',
+            body: 'Xem cách khách hàng được phục hồi và cải thiện vận động ngay tại club.',
+            points: [
+              'Quy trình thực tế tại phòng ProPhysio',
+              'Cách therapist thực hiện session',
+              'Khách cảm nhận rõ sự khác biệt ngay từ buổi đầu'
+            ]
+          },
           boxes: [
             { title: 'Cách chọn gói nhanh', body: 'Đau sau tập: Phục hồi vận động. Đau do ngồi nhiều: Đau mỏi văn phòng. Đau khớp hoặc lớn tuổi: Cơ xương khớp cho người trung niên. Đau nhiều vị trí: Phục hồi 360°.' },
             { title: 'Cách bán', body: 'Gói lẻ dùng để khách trải nghiệm. Gói 12 buổi phù hợp với khách có vấn đề rõ. Gói 50 hoặc 100 buổi phù hợp với khách VIP, gia đình hoặc chăm sóc dài hạn.' },
@@ -91,7 +102,7 @@
           ]
         },
         process: {
-          title: 'Quy trình thực hiện Cali ProPhysio',
+          title: 'Quy trình thực hiện California ProPhysio',
           subtitle: 'Quy trình này giúp nhân viên hiểu rõ vai trò của từng bộ phận: PT tư vấn và thu tiền, khách và therapist check-in đúng chuẩn, sau đó session được thực hiện tại phòng ProPhysio.',
           badge: 'Service Operation Flow',
           steps: [
@@ -374,9 +385,9 @@
           subtitle: 'Staff can quickly view the product groups and click each package for details.',
           rule: 'Rule: Sell as recovery, movement care, and wellness — not as medical treatment.',
           detailBtn: 'View details',
-          positioningKicker: 'Cali ProPhysio Positioning',
+          positioningKicker: 'California ProPhysio Positioning',
           positioningTitle: 'The bridge between training and recovery',
-          positioningBody: 'Cali ProPhysio bridges physical training and recovery care, helping customers reduce soreness faster, improve movement performance, and proactively reduce injury risk.',
+          positioningBody: 'California ProPhysio bridges physical training and recovery care, helping customers reduce soreness faster, improve movement performance, and proactively reduce injury risk.',
           valueTitle: 'Core values',
           values: [
             { title: 'Closed-loop journey', body: 'From recovery → movement retraining → injury prevention, delivered directly within the California training environment.' },
@@ -385,6 +396,16 @@
             { title: 'Personalized by condition', body: 'Each customer is guided based on movement condition, soreness area, training goals, and care needs.' },
             { title: 'Integrated Wellness ecosystem', body: 'Connected with training, nutrition, PT, and lifestyle to build a holistic and sustainable health journey.' }
           ],
+          video: {
+            kicker: 'Real club video',
+            title: 'Real ProPhysio Experience',
+            body: 'See how customers experience recovery and movement care directly inside the club.',
+            points: [
+              'Real process inside the ProPhysio room',
+              'How the therapist delivers the session',
+              'Customers can feel a clear difference from the first session'
+            ]
+          },
           boxes: [
             { title: 'Quick package selection', body: 'Post-workout soreness: Fitness Recovery. Pain from sitting: Office Pain Relief. Older adults or joint discomfort: Golden Mobility. Multiple pain areas: 360° Recovery.' },
             { title: 'How to sell', body: 'Single session is for trial. 12-session package is for clear pain points. 50 or 100-session packages are for VIPs, families, or long-term care.' },
@@ -392,7 +413,7 @@
           ]
         },
         process: {
-          title: 'Cali ProPhysio Service Process',
+          title: 'California ProPhysio Service Process',
           subtitle: 'This process helps staff understand each role clearly: PT presents and collects payment, the customer and therapist check in properly, then the session is delivered inside the ProPhysio room.',
           badge: 'Service Operation Flow',
           steps: [
@@ -685,7 +706,7 @@
       const nav = document.getElementById('mainNav');
       const labels = i18n[currentLang].nav;
       nav.innerHTML = PAGE_KEYS.map(page => `
-        <button type="button" data-page="${page}" class="nav-tab shrink-0 px-4 py-2 rounded-full text-sm font-bold ${page === currentPage ? 'tab-active' : 'tab-inactive'}">
+        <button type="button" data-page="${page}" class="nav-tab min-w-[150px] max-w-[220px] px-4 py-3 rounded-2xl text-sm font-black leading-tight text-center whitespace-normal ${page === currentPage ? 'tab-active' : 'tab-inactive'}">
           ${escapeHTML(labels[page])}
         </button>
       `).join('');
@@ -745,6 +766,7 @@
             ${PRODUCT_KEYS.map(key => renderProductCard(key)).join('')}
           </div>
           ${renderDemandSection(text)}
+          ${renderVideoSection(text)}
           <section class="grid lg:grid-cols-3 gap-5 mt-6">
             ${text.home.boxes.map(box => renderInfoBox(box.title, box.body)).join('')}
           </section>
@@ -826,6 +848,38 @@
             <div class="text-sm uppercase tracking-widest text-blue-100 font-black mb-2">${escapeHTML(process.ctaTitle)}</div>
             <p class="text-lg lg:text-xl font-bold leading-relaxed">${escapeHTML(process.ctaBody)}</p>
           </section>
+        </section>
+      `;
+    }
+
+    function renderVideoSection(text) {
+      const video = text.home.video;
+      if (!video) return '';
+      return `
+        <section class="mt-10 mb-8 bg-white border border-slate-200 rounded-[2rem] p-5 lg:p-6 shadow-sm">
+          <div class="grid lg:grid-cols-2 gap-6 items-center">
+            <div class="rounded-3xl overflow-hidden shadow-lg bg-slate-900 border border-slate-200">
+              <iframe
+                class="w-full aspect-video"
+                src="https://drive.google.com/file/d/11c8OPDoSO25254TWTCh6PhZiXWu7V3dl/preview"
+                title="ProPhysio Demo Video"
+                frameborder="0"
+                allow="autoplay; fullscreen"
+                allowfullscreen>
+              </iframe>
+              <div class="bg-white px-4 py-3">
+                <a href="https://drive.google.com/file/d/11c8OPDoSO25254TWTCh6PhZiXWu7V3dl/view" target="_blank" rel="noopener noreferrer" class="text-sm font-black text-blue-600 hover:underline">Xem video full →</a>
+              </div>
+            </div>
+            <div>
+              <div class="text-sm uppercase tracking-widest text-blue-600 font-black mb-3">${escapeHTML(video.kicker)}</div>
+              <h3 class="text-2xl lg:text-3xl font-black mb-3">${escapeHTML(video.title)}</h3>
+              <p class="text-slate-600 mb-5 leading-relaxed">${escapeHTML(video.body)}</p>
+              <ul class="space-y-3 text-slate-700 font-semibold">
+                ${video.points.map(item => `<li class="flex gap-3"><span class="text-blue-600 font-black">✓</span><span>${escapeHTML(item)}</span></li>`).join('')}
+              </ul>
+            </div>
+          </div>
         </section>
       `;
     }
