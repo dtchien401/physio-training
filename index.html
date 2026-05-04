@@ -16,24 +16,6 @@
     .product-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(15, 23, 42, .08); }
     .fade-in { animation: fadeIn .25s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Mobile fix: keep content usable on phones */
-    @media (max-width: 768px) {
-      header { position: relative !important; top: auto !important; }
-      header > div { padding-top: 0.6rem !important; padding-bottom: 0.6rem !important; gap: 0.6rem !important; }
-      #mainNav { gap: 0.4rem !important; }
-      .nav-tab {
-        min-width: calc(50% - 0.25rem) !important;
-        max-width: none !important;
-        padding: 0.6rem 0.65rem !important;
-        font-size: 0.72rem !important;
-        line-height: 1.1rem !important;
-        border-radius: 0.9rem !important;
-      }
-      .lang-btn { padding: 0.45rem 0.8rem !important; font-size: 0.78rem !important; }
-      main#app { padding-top: 1rem !important; padding-bottom: 1.5rem !important; }
-      h1[data-i18n="appTitle"] { font-size: 1.05rem !important; }
-    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -59,7 +41,7 @@
     'use strict';
 
     const PRODUCT_KEYS = ['fitness', 'office', 'senior', 'fullbody'];
-    const PAGE_KEYS = ['home', 'process', ...PRODUCT_KEYS];
+    const PAGE_KEYS = ['home', 'summary', 'process', ...PRODUCT_KEYS];
 
     let currentLang = 'vi';
     let currentPage = 'home';
@@ -69,6 +51,7 @@
         appTitle: 'CALI PROPHYSIO',
         nav: {
           home: 'TRANG CHỦ',
+          summary: 'TÓM TẮT NHANH',
           process: 'QUY TRÌNH THỰC HIỆN',
           fitness: 'PHỤC HỒI VẬN ĐỘNG',
           office: 'ĐAU MỎI VĂN PHÒNG',
@@ -380,6 +363,7 @@
         appTitle: 'Recovery & Movement Care Sales Tool',
         nav: {
           home: 'Home',
+          summary: 'Quick Summary',
           process: 'Service Process',
           fitness: 'Fitness Recovery',
           office: 'Office Pain Relief',
@@ -762,8 +746,158 @@
       `;
     }
 
-    function renderCurrentPage() {
+    
+function renderSummaryPage() {
+  const isVi = currentLang === 'vi';
+
+  const copy = isVi ? {
+    title: 'Tóm tắt nhanh · ProPhysio',
+    subtitle: 'Một trang cô đọng để nhân viên nắm nhanh: bán cho ai, bán gói nào, giá bao nhiêu, chốt như thế nào.',
+    positioningTitle: 'Định vị',
+    positioningBody: 'California ProPhysio là dịch vụ chăm sóc phục hồi vận động nằm trong hệ sinh thái Cali, giúp khách giảm đau mỏi, vận động tốt hơn, tập luyện hiệu quả hơn và chủ động phòng ngừa chấn thương.',
+    customerTitle: 'Phân loại khách hàng',
+    customers: [
+      { group: 'Khách tập gym / PT', need: 'Đau mỏi sau tập, cơ căng, phục hồi chậm', product: 'Phục hồi vận động' },
+      { group: 'Dân văn phòng', need: 'Cổ vai gáy, đau lưng, ngồi lâu, căng cứng', product: 'Đau mỏi văn phòng' },
+      { group: 'Người trung niên / lớn tuổi', need: 'Đau khớp nhẹ, vận động kém, cần chăm sóc đều', product: 'Cơ xương khớp cho người trung niên' },
+      { group: 'VIP / gia đình / đa vùng', need: 'Đau nhiều vị trí, muốn linh hoạt, chăm sóc dài hạn', product: 'Phục hồi 360°' }
+    ],
+    solutionTitle: 'Giải pháp cốt lõi',
+    solutions: ['Kích hoạt cơ & giải phóng điểm đau', 'Tác động sâu & làm mềm mô', 'Manual Therapy để cải thiện chuyển động và tư thế'],
+    packageTitle: 'Gói bán & giá',
+    packages: [
+      { name: 'Phục hồi vận động', detail: 'Gói lẻ / 12 buổi / 100+ buổi', price: '1.29M · 1.09M · 990K / buổi' },
+      { name: 'Đau mỏi văn phòng', detail: 'Cổ-vai-gáy hoặc thắt lưng', price: '1.29M · 1.09M · 990K / buổi' },
+      { name: 'Cơ xương khớp trung niên', detail: 'Chăm sóc an toàn, đều đặn', price: '1.29M · 1.09M · 990K / buổi' },
+      { name: 'Phục hồi 360°', detail: 'Gói linh hoạt 50 / 100+ buổi', price: '1.09M · 990K / buổi' }
+    ],
+    ladderTitle: 'Cách chọn gói nhanh',
+    ladder: [
+      'Gói lẻ: dùng cho khách trải nghiệm lần đầu.',
+      'Gói 12 buổi: khách có vấn đề rõ, cần chăm sóc đều.',
+      'Gói 50 buổi: khách VIP hoặc đau nhiều vùng, muốn linh hoạt.',
+      'Gói 100+ buổi: gia đình, khách dài hạn, wellness routine.'
+    ],
+    benefitsTitle: 'Lợi ích khách nhận được',
+    benefits: ['Cơ thể nhẹ hơn sau buổi đầu', 'Vận động, tập luyện và làm việc dễ hơn', 'Giảm đau mỏi lặp lại tốt hơn chỉ nghỉ ngơi', 'Có cảm giác được chăm sóc chuyên nghiệp trong club'],
+    processTitle: 'Quy trình vận hành',
+    process: 'PT tư vấn đúng gói → thu tiền & POS CRM → khách check-in vân tay → therapist check-in → thực hiện session tại phòng ProPhysio.',
+    closeTitle: 'Câu chốt nhanh',
+    close: '“Mình thử 1 buổi trước để anh/chị cảm nhận. Nếu thấy cơ thể nhẹ hơn và vận động tốt hơn, mình chuyển sang gói 12 buổi để chăm sóc đều và tiết kiệm hơn.”'
+  } : {
+    title: 'Quick Summary · ProPhysio',
+    subtitle: 'A compact page for staff to understand who to sell to, which package to sell, the pricing ladder, and how to close.',
+    positioningTitle: 'Positioning',
+    positioningBody: 'California ProPhysio is movement recovery care inside the Cali ecosystem, helping customers reduce soreness, move better, train better, and proactively reduce injury risk.',
+    customerTitle: 'Customer segmentation',
+    customers: [
+      { group: 'Gym / PT customers', need: 'Post-workout soreness, tight muscles, slow recovery', product: 'Fitness Recovery' },
+      { group: 'Office workers', need: 'Neck, shoulder, lower-back discomfort, long sitting', product: 'Office Pain Relief' },
+      { group: 'Middle-aged / older adults', need: 'Mild joint discomfort, limited movement, consistent care', product: 'Golden Mobility' },
+      { group: 'VIP / family / multi-area', need: 'Multiple areas, flexibility, long-term care', product: '360° Recovery' }
+    ],
+    solutionTitle: 'Core solution',
+    solutions: ['Muscle activation & pain-point release', 'Deep-tissue softening', 'Manual Therapy for movement and posture'],
+    packageTitle: 'Packages & pricing',
+    packages: [
+      { name: 'Fitness Recovery', detail: 'Single / 12 sessions / 100+ sessions', price: '1.29M · 1.09M · 990K / session' },
+      { name: 'Office Pain Relief', detail: 'Neck-shoulder or lower back', price: '1.29M · 1.09M · 990K / session' },
+      { name: 'Golden Mobility', detail: 'Safe and consistent care', price: '1.29M · 1.09M · 990K / session' },
+      { name: '360° Recovery', detail: 'Flexible 50 / 100+ sessions', price: '1.09M · 990K / session' }
+    ],
+    ladderTitle: 'Quick package selection',
+    ladder: [
+      'Single: first-time trial.',
+      '12 sessions: clear pain point and consistent care.',
+      '50 sessions: VIP or multiple areas, flexible use.',
+      '100+ sessions: family, long-term care, wellness routine.'
+    ],
+    benefitsTitle: 'Customer benefits',
+    benefits: ['Body feels lighter after the first session', 'Training, work, and daily movement become easier', 'Better repeated discomfort management than rest alone', 'Professional care experience inside the club'],
+    processTitle: 'Operating process',
+    process: 'PT advises the right package → collect payment & POS CRM → customer fingerprint check-in → therapist check-in → session delivered in the ProPhysio room.',
+    closeTitle: 'Quick closing line',
+    close: '“Let’s start with one session so you can feel the difference. If your body feels lighter and movement improves, we can move to a 12-session package for consistency and better value.”'
+  };
+
+  return `
+    <section class="fade-in">
+      <div class="mb-6">
+        <h2 class="text-2xl lg:text-3xl font-black">${escapeHTML(copy.title)}</h2>
+        <p class="text-slate-600 mt-2 max-w-4xl">${escapeHTML(copy.subtitle)}</p>
+      </div>
+
+      <div class="bg-blue-50 border border-blue-100 rounded-3xl p-5 mb-5">
+        <div class="text-sm uppercase tracking-widest text-blue-600 font-black mb-2">${escapeHTML(copy.positioningTitle)}</div>
+        <p class="text-slate-800 font-semibold">${escapeHTML(copy.positioningBody)}</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-5 mb-5">
+        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
+          <h3 class="text-xl font-black mb-4">${escapeHTML(copy.customerTitle)}</h3>
+          <div class="space-y-3">
+            ${copy.customers.map(item => `
+              <div class="rounded-2xl bg-slate-50 border border-slate-100 p-4">
+                <div class="font-black">${escapeHTML(item.group)}</div>
+                <div class="text-sm text-slate-600 mt-1">${escapeHTML(item.need)}</div>
+                <div class="text-sm font-bold text-blue-700 mt-2">→ ${escapeHTML(item.product)}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
+          <h3 class="text-xl font-black mb-4">${escapeHTML(copy.packageTitle)}</h3>
+          <div class="space-y-3">
+            ${copy.packages.map(item => `
+              <div class="rounded-2xl border border-slate-100 p-4">
+                <div class="font-black">${escapeHTML(item.name)}</div>
+                <div class="text-sm text-slate-600">${escapeHTML(item.detail)}</div>
+                <div class="text-sm font-black text-red-600 mt-1">${escapeHTML(item.price)}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-5 mb-5">
+        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
+          <h3 class="text-lg font-black mb-3">${escapeHTML(copy.solutionTitle)}</h3>
+          <ul class="space-y-2 text-sm text-slate-700">
+            ${copy.solutions.map(item => `<li>✓ ${escapeHTML(item)}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
+          <h3 class="text-lg font-black mb-3">${escapeHTML(copy.ladderTitle)}</h3>
+          <ul class="space-y-2 text-sm text-slate-700">
+            ${copy.ladder.map(item => `<li>• ${escapeHTML(item)}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
+          <h3 class="text-lg font-black mb-3">${escapeHTML(copy.benefitsTitle)}</h3>
+          <ul class="space-y-2 text-sm text-slate-700">
+            ${copy.benefits.map(item => `<li>✓ ${escapeHTML(item)}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-5">
+        <div class="bg-slate-900 text-white rounded-3xl p-5 shadow-sm">
+          <div class="text-sm uppercase tracking-widest text-slate-300 font-black mb-2">${escapeHTML(copy.processTitle)}</div>
+          <p class="text-slate-100 font-semibold">${escapeHTML(copy.process)}</p>
+        </div>
+        <div class="bg-red-50 border border-red-100 rounded-3xl p-5">
+          <div class="text-sm uppercase tracking-widest text-red-600 font-black mb-2">${escapeHTML(copy.closeTitle)}</div>
+          <p class="text-red-950 font-semibold">${escapeHTML(copy.close)}</p>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderCurrentPage() {
       if (currentPage === 'home') return renderHome();
+      if (currentPage === 'summary') return renderSummaryPage();
       if (currentPage === 'process') return renderProcessPage();
       return renderProductPage(currentPage);
     }
