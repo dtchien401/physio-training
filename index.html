@@ -16,6 +16,24 @@
     .product-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(15, 23, 42, .08); }
     .fade-in { animation: fadeIn .25s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Mobile fix: keep content usable on phones */
+    @media (max-width: 768px) {
+      header { position: relative !important; top: auto !important; }
+      header > div { padding-top: 0.6rem !important; padding-bottom: 0.6rem !important; gap: 0.6rem !important; }
+      #mainNav { gap: 0.4rem !important; }
+      .nav-tab {
+        min-width: calc(50% - 0.25rem) !important;
+        max-width: none !important;
+        padding: 0.6rem 0.65rem !important;
+        font-size: 0.72rem !important;
+        line-height: 1.1rem !important;
+        border-radius: 0.9rem !important;
+      }
+      .lang-btn { padding: 0.45rem 0.8rem !important; font-size: 0.78rem !important; }
+      main#app { padding-top: 1rem !important; padding-bottom: 1.5rem !important; }
+      h1[data-i18n="appTitle"] { font-size: 1.05rem !important; }
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
