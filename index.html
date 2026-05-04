@@ -40,7 +40,7 @@
     'use strict';
 
     const PRODUCT_KEYS = ['fitness', 'office', 'senior', 'fullbody'];
-    const PAGE_KEYS = ['home', ...PRODUCT_KEYS];
+    const PAGE_KEYS = ['home', 'process', ...PRODUCT_KEYS];
 
     let currentLang = 'vi';
     let currentPage = 'home';
@@ -50,6 +50,7 @@
         appTitle: 'CALI PROPHYSIO',
         nav: {
           home: 'TRANG CHỦ',
+          process: 'QUY TRÌNH THỰC HIỆN',
           fitness: 'PHỤC HỒI VẬN ĐỘNG',
           office: 'ĐAU MỎI VĂN PHÒNG',
           senior: 'CƠ XƯƠNG KHỚP CHO NGƯỜI TRUNG NIÊN',
@@ -88,6 +89,34 @@
             { title: 'Cách bán', body: 'Gói lẻ dùng để khách trải nghiệm. Gói 12 buổi phù hợp với khách có vấn đề rõ. Gói 50 hoặc 100 buổi phù hợp với khách VIP, gia đình hoặc chăm sóc dài hạn.' },
             { title: 'Thông điệp chính', body: 'Dịch vụ này không chỉ giúp khách dễ chịu hơn, mà còn giúp cơ thể quay lại vận động tốt hơn để tập luyện, làm việc và sinh hoạt ổn định hơn.' }
           ]
+        },
+        process: {
+          title: 'Quy trình thực hiện California ProPhysio',
+          subtitle: 'Quy trình này giúp nhân viên hiểu rõ vai trò của từng bộ phận: PT tư vấn và thu tiền, khách và therapist check-in đúng chuẩn, sau đó session được thực hiện tại phòng ProPhysio.',
+          badge: 'Service Operation Flow',
+          steps: [
+            { no: '01', title: 'PT present sản phẩm', body: 'PT giới thiệu gói phù hợp với nhu cầu của khách, giải thích lợi ích, đối tượng phù hợp và cách dịch vụ hỗ trợ phục hồi vận động.' },
+            { no: '02', title: 'Thu tiền & POS lên CRM', body: 'Sau khi khách đồng ý, PT thực hiện thu tiền và POS lên CRM như các gói sản phẩm/dịch vụ khác của California.' },
+            { no: '03', title: 'Khách check-in vân tay', body: 'Khi đến sử dụng dịch vụ, khách hàng check-in bằng vân tay để ghi nhận lượt sử dụng và đảm bảo kiểm soát dịch vụ.' },
+            { no: '04', title: 'Therapist check-in vân tay', body: 'Therapist đến từ bệnh viện/đơn vị chuyên môn cũng check-in vân tay để xác nhận người thực hiện session.' },
+            { no: '05', title: 'Thực hiện session tại phòng ProPhysio', body: 'Therapist thực hiện session tại phòng ProPhysio theo gói đã mua, tình trạng vận động của khách và quy trình vận hành tại club.' }
+          ],
+          rolesTitle: 'Vai trò chính trong quy trình',
+          roles: [
+            { title: 'PT / Sales', body: 'Present sản phẩm, tư vấn đúng nhu cầu, thu tiền, POS CRM và hướng dẫn khách cách sử dụng dịch vụ.' },
+            { title: 'Khách hàng', body: 'Check-in vân tay trước session, tham gia đầy đủ theo lịch và phản hồi tình trạng cơ thể cho therapist.' },
+            { title: 'Therapist', body: 'Check-in vân tay, thực hiện session tại phòng ProPhysio và đảm bảo trải nghiệm chuyên nghiệp, an toàn.' },
+            { title: 'Club / Operation', body: 'Đảm bảo phòng ProPhysio, lịch hẹn, check-in, CRM và kiểm soát lượt sử dụng được vận hành đúng chuẩn.' }
+          ],
+          reminderTitle: 'Lưu ý vận hành',
+          reminders: [
+            'Không thực hiện session nếu chưa có dữ liệu POS/CRM hoặc chưa xác nhận quyền sử dụng dịch vụ.',
+            'Khách và therapist đều cần check-in vân tay để tránh thất thoát lượt và đảm bảo tracking.',
+            'Therapist thực hiện tại phòng ProPhysio, không làm tự phát ở khu vực không phù hợp.',
+            'PT không dùng ngôn ngữ chữa bệnh; chỉ tư vấn theo hướng phục hồi vận động, chăm sóc cơ thể và cải thiện trải nghiệm tập luyện.'
+          ],
+          ctaTitle: 'Nguyên tắc ngắn gọn',
+          ctaBody: 'PT bán đúng gói → CRM ghi nhận đúng → khách check-in đúng → therapist thực hiện đúng phòng → club kiểm soát đúng doanh thu và lượt sử dụng.'
         },
         demand: {
           title: 'Vì sao khách cần công nghệ phục hồi này?',
@@ -322,6 +351,7 @@
         appTitle: 'Recovery & Movement Care Sales Tool',
         nav: {
           home: 'Home',
+          process: 'Service Process',
           fitness: 'Fitness Recovery',
           office: 'Office Pain Relief',
           senior: 'Golden Mobility',
@@ -360,6 +390,34 @@
             { title: 'How to sell', body: 'Single session is for trial. 12-session package is for clear pain points. 50 or 100-session packages are for VIPs, families, or long-term care.' },
             { title: 'Key message', body: 'This service does not only help customers feel better today; it helps their body move better for training, work, and daily life.' }
           ]
+        },
+        process: {
+          title: 'California ProPhysio Service Process',
+          subtitle: 'This process helps staff understand each role clearly: PT presents and collects payment, the customer and therapist check in properly, then the session is delivered inside the ProPhysio room.',
+          badge: 'Service Operation Flow',
+          steps: [
+            { no: '01', title: 'PT presents the product', body: 'PT introduces the suitable package based on customer needs, explains the benefits, target customer, and how the service supports movement recovery.' },
+            { no: '02', title: 'Collect payment & POS in CRM', body: 'After the customer agrees, PT collects payment and posts the transaction in CRM like other California products/services.' },
+            { no: '03', title: 'Customer fingerprint check-in', body: 'When using the service, the customer checks in by fingerprint to record usage and ensure service control.' },
+            { no: '04', title: 'Therapist fingerprint check-in', body: 'The therapist from the hospital/professional partner also checks in by fingerprint to confirm who delivers the session.' },
+            { no: '05', title: 'Session delivered in ProPhysio room', body: 'The therapist delivers the session in the ProPhysio room based on the purchased package, the customer’s movement condition, and club operation process.' }
+          ],
+          rolesTitle: 'Main roles in the process',
+          roles: [
+            { title: 'PT / Sales', body: 'Present the product, advise based on customer needs, collect payment, POS in CRM, and guide the customer on service usage.' },
+            { title: 'Customer', body: 'Fingerprint check-in before the session, attend according to schedule, and share body condition feedback with the therapist.' },
+            { title: 'Therapist', body: 'Fingerprint check-in, deliver the session in the ProPhysio room, and ensure a professional and safe experience.' },
+            { title: 'Club / Operation', body: 'Ensure room readiness, booking, check-in, CRM, and usage control are operated correctly.' }
+          ],
+          reminderTitle: 'Operation reminders',
+          reminders: [
+            'Do not deliver a session without POS/CRM data or confirmation of service entitlement.',
+            'Both customer and therapist should fingerprint check in to avoid usage leakage and ensure tracking.',
+            'Therapist delivers the session in the ProPhysio room, not in an unsuitable open area.',
+            'PT should avoid medical treatment claims and use movement recovery, body care, and training experience language.'
+          ],
+          ctaTitle: 'Simple operating rule',
+          ctaBody: 'PT sells the right package → CRM records correctly → customer checks in correctly → therapist delivers in the right room → club controls revenue and usage correctly.'
         },
         demand: {
           title: 'Why do customers need this recovery technology?',
@@ -666,7 +724,9 @@
     }
 
     function renderCurrentPage() {
-      return currentPage === 'home' ? renderHome() : renderProductPage(currentPage);
+      if (currentPage === 'home') return renderHome();
+      if (currentPage === 'process') return renderProcessPage();
+      return renderProductPage(currentPage);
     }
 
     function renderHome() {
@@ -714,6 +774,58 @@
               </div>
             </div>
           </div>
+        </section>
+      `;
+    }
+
+    function renderProcessPage() {
+      const text = i18n[currentLang];
+      const process = text.process;
+      return `
+        <section id="page-process" class="page fade-in">
+          <div class="mb-6">
+            <button type="button" data-page="home" class="back-btn mb-4 text-sm font-bold text-red-600 hover:underline">${escapeHTML(text.labels.back)}</button>
+            <div class="inline-flex bg-blue-50 border border-blue-100 text-blue-700 rounded-full px-4 py-2 text-xs font-black uppercase tracking-widest mb-4">${escapeHTML(process.badge)}</div>
+            <h2 class="text-3xl lg:text-4xl font-black">${escapeHTML(process.title)}</h2>
+            <p class="text-slate-600 mt-2 max-w-4xl">${escapeHTML(process.subtitle)}</p>
+          </div>
+
+          <section class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm mb-6">
+            <div class="grid md:grid-cols-2 xl:grid-cols-5 gap-4">
+              ${process.steps.map(step => `
+                <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                  <div class="h-10 w-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-black mb-4">${escapeHTML(step.no)}</div>
+                  <h3 class="text-lg font-black mb-2">${escapeHTML(step.title)}</h3>
+                  <p class="text-sm text-slate-600 leading-relaxed">${escapeHTML(step.body)}</p>
+                </article>
+              `).join('')}
+            </div>
+          </section>
+
+          <section class="grid lg:grid-cols-2 gap-5 mb-6">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+              <h3 class="text-2xl font-black mb-4">${escapeHTML(process.rolesTitle)}</h3>
+              <div class="grid md:grid-cols-2 gap-4">
+                ${process.roles.map(role => `
+                  <article class="rounded-2xl border border-slate-200 p-4">
+                    <h4 class="font-black mb-2">${escapeHTML(role.title)}</h4>
+                    <p class="text-sm text-slate-600">${escapeHTML(role.body)}</p>
+                  </article>
+                `).join('')}
+              </div>
+            </div>
+            <div class="bg-slate-900 text-white rounded-3xl p-6 shadow-sm">
+              <h3 class="text-2xl font-black mb-4">${escapeHTML(process.reminderTitle)}</h3>
+              <ul class="space-y-3 text-sm text-slate-200">
+                ${process.reminders.map(item => `<li>✓ ${escapeHTML(item)}</li>`).join('')}
+              </ul>
+            </div>
+          </section>
+
+          <section class="rounded-3xl bg-gradient-to-br from-blue-700 via-blue-600 to-slate-950 text-white p-6 shadow-lg">
+            <div class="text-sm uppercase tracking-widest text-blue-100 font-black mb-2">${escapeHTML(process.ctaTitle)}</div>
+            <p class="text-lg lg:text-xl font-bold leading-relaxed">${escapeHTML(process.ctaBody)}</p>
+          </section>
         </section>
       `;
     }
