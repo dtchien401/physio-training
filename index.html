@@ -71,6 +71,96 @@
       .header-logo-img { max-width: 210px; }
     }
 
+
+    /* === V29 DESIGN POLISH: keep all content, improve visual system === */
+    :root {
+      --brand-navy: #0f172a;
+      --brand-blue: #0b82f0;
+      --brand-red: #dc2626;
+      --soft-bg: #f8fafc;
+      --card-border: #e5e7eb;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(14, 165, 233, 0.08), transparent 32rem),
+        radial-gradient(circle at top right, rgba(220, 38, 38, 0.05), transparent 30rem),
+        #f8fafc;
+    }
+
+    header {
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(18px);
+    }
+
+    .header-logo-img {
+      max-width: 260px;
+      display: block;
+    }
+
+    .tab-active {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(220, 38, 38, 0.22);
+    }
+
+    .tab-inactive {
+      background: rgba(255,255,255,0.78);
+      color: #334155;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .nav-tab {
+      transition: all .18s ease;
+    }
+
+    .nav-tab:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    .product-card,
+    .rounded-\[2rem\],
+    .rounded-3xl,
+    .rounded-2xl {
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .product-card:hover,
+    .bg-white.border:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+      border-color: rgba(59, 130, 246, 0.22);
+    }
+
+    h2, h3 {
+      letter-spacing: -0.02em;
+    }
+
+    #app > section:first-child {
+      animation: fadeIn .28s ease-in-out;
+    }
+
+    @media (max-width: 768px) {
+      .header-logo-img { max-width: 190px; }
+      header .max-w-\[1800px\] {
+        padding-top: .7rem !important;
+        padding-bottom: .7rem !important;
+      }
+      main#app {
+        padding-top: 1rem !important;
+        padding-bottom: 2rem !important;
+      }
+      h2 {
+        font-size: 1.55rem !important;
+        line-height: 1.15 !important;
+      }
+    }
+
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
