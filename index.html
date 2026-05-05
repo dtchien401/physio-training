@@ -830,7 +830,7 @@
       setStaticText();
       renderNav();
       const app = document.getElementById('app');
-      app.innerHTML = (currentPage === 'home' ? renderHero() : '') + renderCurrentPage();
+      app.innerHTML = renderCurrentPage();
       attachPageEvents();
     }
 
